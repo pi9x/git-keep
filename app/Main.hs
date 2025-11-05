@@ -11,10 +11,10 @@ main :: IO ()
 main = do
   args <- getArgs
   case args of
-    ["--help", "-h"] -> putStrLn "Usage: git keep [-r/--recursive] (use -r/--recursive to create .gitkeep files in all subdirectories)"
-    ["--version", "-v"] -> putStrLn "git-keep version 0.1.0.1"
+    ["-h"] -> putStrLn "Usage: git keep [-r] (use -r to create .gitkeep files in all subdirectories recursively)"
+    ["-v"] -> putStrLn "git-keep version 0.1.0.1"
     _ -> do
-      let isRecursive = any (`elem` ["--recursive", "-r"]) args
+      let isRecursive = args == ["-r"]
       createGitkeep isRecursive "."
 
 -- Create .gitkeep file(s)
