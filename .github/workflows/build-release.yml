@@ -51,14 +51,20 @@ jobs:
         run: |
           cabal build exe:git-keep
           mkdir -p out
-          cp $(cabal list-bin exe:git-keep) out/git-keep-linux-x64
+          cp $(cabal list-bin exe:git-keep) out/git-keep
+          
+      - name: Zip release artifact
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          cd out
+          zip git-keep-${GITHUB_REF_NAME}-linux-x64.zip git-keep
 
       - name: Upload release artifact
         if: startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v6
         with:
-          name: git-keep-linux-x64
-          path: out/git-keep-linux-x64
+          name: git-keep-${{ github.ref_name }}-linux-x64
+          path: out/git-keep-${{ github.ref_name }}-linux-x64.zip
 
   release:
     if: startsWith(github.ref, 'refs/tags/')
